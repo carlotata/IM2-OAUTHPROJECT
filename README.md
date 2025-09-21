@@ -96,7 +96,7 @@ This will create a new folder with `backend/` and `frontend/`.
 
    # NextAuth
    NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your_generated_secret
+   NEXTAUTH_SECRET="your_generated_secret"
    ```
    > To generate a NextAuth secret, run (Computer Terminal):
    > ```bash
