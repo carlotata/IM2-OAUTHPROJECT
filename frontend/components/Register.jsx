@@ -45,45 +45,94 @@ const Register = () => {
   };
 
   return (
-      <Card className="w-full max-w-lg mx-auto">
+     <Card className="w-full max-w-md mx-auto">
         <form onSubmit={handleSubmit}>
-          <CardHeader>
-            <CardTitle className="text-2xl">Sign Up</CardTitle>
-            <CardDescription>Enter your information to create an account.</CardDescription>
-            {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-            {success && <p className="text-sm text-green-600 mt-2">{success}</p>}
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="first_name">First name</Label>
-                <Input id="first_name" name="first_name" placeholder="Max" value={formData.first_name} onChange={onChange} required />
+           <CardHeader className="flex flex-col items-center mb-7">
+              <img
+                 src="/avatar.svg"
+                 alt="Sign Up"
+                 className="h-20 w-20 rounded-full border-2 border-teal-500 bg-white shadow mb-4"
+              />
+              <CardTitle className="text-teal-700">Sign Up</CardTitle>
+              <CardDescription>
+                 Enter your information to create an account.
+              </CardDescription>
+              {success && (
+                 <p className="text-sm text-green-600 mt-2">{success}</p>
+              )}
+              {error && (
+                 <p className="text-sm text-destructive mt-2">{error}</p>
+              )}
+           </CardHeader>
+
+           <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                    <Label htmlFor="first_name">First Name</Label>
+                    <Input
+                       id="first_name"
+                       name="first_name"
+                       placeholder="Max"
+                       value={formData.first_name}
+                       onChange={onChange}
+                       required
+                    />
+                 </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="last_name">Last Name</Label>
+                    <Input
+                       id="last_name"
+                       name="last_name"
+                       placeholder="Robinson"
+                       value={formData.last_name}
+                       onChange={onChange}
+                       required
+                    />
+                 </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="last_name">Last name</Label>
-                <Input id="last_name" name="last_name" placeholder="Robinson" value={formData.last_name} onChange={onChange} required />
+
+              <div className="space-y-2">
+                 <Label htmlFor="email">Email</Label>
+                 <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    value={formData.email}
+                    onChange={onChange}
+                    required
+                 />
               </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="m@example.com" value={formData.email} onChange={onChange} required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" value={formData.password} onChange={onChange} required />
-            </div>
-          </CardContent>
-          <CardFooter className="flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating Account..." : "Create account"}
-            </Button>
-             <div className="mt-4 text-center text-sm">
-                Already have an account?{" "}
-                <Link href="/login" className="underline">Sign in</Link>
-             </div>
-          </CardFooter>
+
+              <div className="space-y-2">
+                 <Label htmlFor="password">Password</Label>
+                 <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={onChange}
+                    required
+                 />
+              </div>
+           </CardContent>
+
+           <CardFooter className="flex-col gap-4 mt-8">
+              <Button
+                 type="submit"
+                 className="w-full bg-teal-600 hover:bg-teal-700  cursor-pointer"
+                 disabled={loading}>
+                 {loading ? "Creating Account..." : "Create Account"}
+              </Button>
+              <div className="mt-4 text-center text-sm">
+                 Already have an account?{" "}
+                 <Link href="/login" className="underline">
+                    Sign in
+                 </Link>
+              </div>
+           </CardFooter>
         </form>
-      </Card>
+     </Card>
   );
 };
 

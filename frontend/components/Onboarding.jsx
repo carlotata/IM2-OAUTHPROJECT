@@ -80,34 +80,69 @@ const Onboarding = () => {
         return <div className="text-center p-8">Saving and redirecting...</div>;
     }
     return (
-        <Card className="w-full max-w-md">
-            <form onSubmit={handleSubmit}>
-                <CardHeader>
-                    <CardTitle>Complete Your Profile</CardTitle>
-                    <CardDescription>Please fill in the details below to continue.</CardDescription>
-                     {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="first_name">First Name</Label>
-                        <Input id="first_name" name="first_name" value={formData.first_name} onChange={onChange} required />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="last_name">Last Name</Label>
-                        <Input id="last_name" name="last_name" value={formData.last_name} onChange={onChange} required />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="age">Age</Label>
-                        <Input id="age" name="age" type="number" value={formData.age} onChange={onChange} required />
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Saving..." : "Save and Continue"}
-                    </Button>
-                </CardFooter>
-            </form>
-        </Card>
+       <Card className="w-full max-w-md mx-auto">
+          <form onSubmit={handleSubmit}>
+             <CardHeader className="flex flex-col items-center mb-7">
+                <img
+                   src="/avatar.svg"
+                   alt="Profile Setup"
+                   className="h-20 w-20 rounded-full border-2 border-teal-500 bg-white shadow mb-4"
+                />
+                <CardTitle className="text-teal-700">
+                   Complete Your Profile
+                </CardTitle>
+                <CardDescription>
+                   Please fill in the details below to continue.
+                </CardDescription>
+                {error && (
+                   <p className="text-sm text-destructive mt-2">{error}</p>
+                )}
+             </CardHeader>
+
+             <CardContent className="space-y-4">
+                <div className="space-y-2">
+                   <Label htmlFor="first_name">First Name</Label>
+                   <Input
+                      id="first_name"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={onChange}
+                      required
+                   />
+                </div>
+                <div className="space-y-2">
+                   <Label htmlFor="last_name">Last Name</Label>
+                   <Input
+                      id="last_name"
+                      name="last_name"
+                      value={formData.last_name}
+                      onChange={onChange}
+                      required
+                   />
+                </div>
+                <div className="space-y-2">
+                   <Label htmlFor="age">Age</Label>
+                   <Input
+                      id="age"
+                      name="age"
+                      type="number"
+                      value={formData.age}
+                      onChange={onChange}
+                      required
+                   />
+                </div>
+             </CardContent>
+
+             <CardFooter className="flex-col gap-4 mt-8">
+                <Button
+                   type="submit"
+                   className="w-full bg-teal-600 hover:bg-teal-700 cursor-pointer"
+                   disabled={loading}>
+                   {loading ? "Saving..." : "Save and Continue"}
+                </Button>
+             </CardFooter>
+          </form>
+       </Card>
     );
 };
 

@@ -107,20 +107,20 @@ const login = async (req, res) => {
     const user = await findUserByEmail(email);
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials." });
+      return res.status(401).json({ message: "Username does not exist!" });
     }
 
-    if (user.provider) {
-        return res.status(403).json({ message: `This account is associated with ${user.provider}. Please use OAuth to sign in.` });
-    }
+  if (user.provider) {
+   return res.status(403).json({
+      message: `This account is associated with ${user.provider.toUpperCase()}. Please use OAuth to sign in.`,
+   });
+  }
 
-    if (!user.password) {
-        return res.status(401).json({ message: "Invalid credentials." });
-    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials." });
+      return res.status(401).json({ message: "Password is Incorrect!" });
     }
 
     const payload = {

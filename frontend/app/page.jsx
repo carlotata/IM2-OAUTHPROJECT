@@ -64,22 +64,138 @@ const HomePage = async () => {
   console.log("DEBUG: All checks passed. Rendering homepage for user:", user.first_name);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <div className="p-8 bg-white shadow-md rounded-lg text-center">
-        <h1 className="text-3xl font-bold mb-2">
-          Welcome, {user.first_name}!
-        </h1>
-        <p className="text-gray-600 mb-6">
-          You have successfully logged in.
-        </p>
-        <div className="flex justify-center items-center gap-4">
-          <Link href="/profile" passHref>
-            <Button>Manage Profile</Button>
-          </Link>
-          <Logout />
-        </div>
-      </div>
-    </div>
+     <div className="flex min-h-screen bg-gradient-to-b from-teal-50 to-white">
+        {/* Sidebar */}
+        <aside className="hidden md:flex flex-col w-64 bg-white border-r min-h-screen shadow-2xl">
+           <div className="flex flex-col items-center py-8">
+              <img
+                 src={user.image || "/avatar.svg"}
+                 alt="HICC Sidebar Avatar"
+                 className="h-20 w-20 rounded-full border-4 border-teal-500 bg-white shadow mb-4"
+              />
+              <h2 className="text-lg font-bold text-teal-700 mb-1">HICC</h2>
+              <p className="text-xs text-gray-500 text-center px-2">
+                 Health Initiative Chatbot Companion
+              </p>
+           </div>
+           <nav className="flex flex-col gap-2 px-6">
+              <Link href="/profile" passHref>
+                 <Button
+                    variant="ghost"
+                    className="justify-start w-full text-left cursor-pointer">
+                    <span className="mr-2">👤</span> Manage Profile
+                 </Button>
+              </Link>
+              <Link
+                 href="/changepassword"
+                 rel="noopener noreferrer"
+                 passHref>
+                 <Button
+                    variant="ghost"
+                    className="justify-start w-full text-left cursor-pointer">
+                    <span className="mr-2">🗝️</span> Change Password
+                 </Button>
+              </Link>
+              <Link
+                 href="https://e911.gov.ph/"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 passHref>
+                 <Button
+                    variant="ghost"
+                    className="justify-start w-full text-left cursor-pointer">
+                    <span className="mr-2">❓</span> Help
+                 </Button>
+              </Link>
+              <Link href="/about" passHref>
+                 <Button
+                    variant="ghost"
+                    className="justify-start w-full text-left cursor-pointer">
+                    <span className="mr-2">ℹ️</span> About
+                 </Button>
+              </Link>
+              <div className="border-t my-4" />
+              <Logout />
+           </nav>
+           <div className="mt-auto px-6 pb-6 text-xs text-gray-400">
+              &copy; {new Date().getFullYear()} HICC
+           </div>
+        </aside>
+
+        {/* Main Chat Area */}
+        <main className="flex flex-col flex-1 items-center justify-center w-full">
+           {/* HICC Chatbot Header */}
+           <div className="w-full max-w-3xl flex items-center gap-3 mb-6 px-4 mt-8 justify-center">
+              <img
+                 src="/avatar.svg"
+                 alt="HICC Avatar"
+                 className="h-12 w-12 rounded-full border-2 border-teal-500 bg-white shadow"
+              />
+              <div>
+                 <h1 className="text-xl font-bold text-teal-700 flex items-center gap-1">
+                    <span className="text-teal-500">H</span>
+                    <span className="font-normal text-black">ealth&nbsp;</span>
+                    <span className="text-teal-500">I</span>
+                    <span className="font-normal text-black">
+                       nitiative&nbsp;
+                    </span>
+                    <span className="text-teal-500">C</span>
+                    <span className="font-normal text-black">hatbot&nbsp;</span>
+                    <span className="text-teal-500">C</span>
+                    <span className="font-normal text-black">ompanion</span>
+                 </h1>
+                 <p className="text-xs text-gray-500">
+                    Welcome, {user.first_name}! You are now chatting with HICC.
+                 </p>
+              </div>
+           </div>
+
+           {/* Chat Window */}
+           <div className="w-full max-w-[95%] flex-1 flex flex-col bg-white overflow-hidden rounded-lg shadow-lg">
+              <div
+                 className="flex-1 overflow-y-auto p-6 space-y-4"
+                 style={{ minHeight: 300 }}>
+                 {/* Example chat bubbles */}
+                 <div className="flex items-start gap-3">
+                    <img
+                       src="/avatar.svg"
+                       alt="HICC"
+                       className="h-8 w-8 rounded-full border border-teal-400"
+                    />
+                    <div className="bg-teal-50 text-teal-900 px-4 py-2 rounded-2xl rounded-bl-none shadow max-w-xs">
+                       Hi {user.first_name}, how can I assist you today?
+                    </div>
+                 </div>
+                 <div className="flex items-start gap-3 justify-end">
+                    <div className="bg-teal-600 text-white px-4 py-2 rounded-2xl rounded-br-none shadow max-w-xs ml-auto">
+                       Show me my health profile.
+                    </div>
+                    <img
+                       src={session.user.image || "/testprofile.svg"}
+                       alt="You"
+                       className="h-8 w-8 rounded-full border border-gray-300"
+                    />
+                 </div>
+                 {/* Add more chat bubbles here as needed */}
+              </div>
+              {/* Chat Input */}
+              <form className="flex items-center gap-2 border-t px-4 py-3 bg-gray-50">
+                 <input
+                    type="text"
+                    placeholder="Type your message..."
+                    className="flex-1 px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    disabled
+                 />
+                 <Button type="submit" disabled>
+                    Send
+                 </Button>
+              </form>
+              <div className="text-xs text-gray-400 text-center py-2">
+                 (Chat functionality coming soon)
+              </div>
+           </div>
+        </main>
+     </div>
   );
 };
 

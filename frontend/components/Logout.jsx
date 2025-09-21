@@ -20,7 +20,7 @@ const Logout = () => {
      await signOut({ callbackUrl: "/login" });
   };
   return (
-    <Button onClick={handleLogout} variant="destructive">
+    <Button onClick={handleLogout} variant="destructive" className="ml-2 cursor-pointer bg-teal-600 hover:bg-teal-700">
       Logout
     </Button>
   );

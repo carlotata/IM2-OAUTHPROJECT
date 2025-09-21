@@ -130,7 +130,7 @@ Then visit 👉 [http://localhost:3000](http://localhost:3000)
 ---
 
 ## 🛠 Tech Stack
-- **Frontend:** Next.js, NextAuth  
+- **Frontend:** Next.js, NextAuth, Dicebear(Avatar)
 - **Backend:** Express.js, JWT  
 - **Database:** MySQL (XAMPP)  
 

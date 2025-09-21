@@ -32,30 +32,65 @@ const ForgotPassword = () => {
     };
 
     return (
-        <Card className="w-full max-w-sm">
-            <form onSubmit={handleSubmit}>
-                <CardHeader>
-                    <CardTitle className="text-2xl">Forgot Password</CardTitle>
-                    <CardDescription>Enter your email to receive a password reset token.</CardDescription>
-                    {message && <p className="text-sm text-green-600 mt-2">{message}</p>}
-                    {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input id="email" type="email" placeholder="m@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    </div>
-                </CardContent>
-                <CardFooter className="flex-col gap-4">
-                    <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? 'Sending...' : 'Get Reset Token'}
-                    </Button>
-                    <Link href="/reset-password" passHref>
-                        <Button variant="outline" className="w-full">I have a token</Button>
-                    </Link>
-                </CardFooter>
-            </form>
-        </Card>
+       <Card className="w-full max-w-md mx-auto">
+          <form onSubmit={handleSubmit}>
+             <CardHeader className="flex flex-col items-center mb-7">
+                <img
+                   src="/avatar.svg"
+                   alt="Forgot Password"
+                   className="h-20 w-20 rounded-full border-2 border-teal-500 bg-white shadow mb-4"
+                />
+                <CardTitle className="text-teal-700">Forgot Password</CardTitle>
+                <CardDescription>
+                   Enter your email to receive a password reset token.
+                </CardDescription>
+                {message && (
+                   <p className="text-sm text-green-600 mt-2">{message}</p>
+                )}
+                {error && (
+                   <p className="text-sm text-destructive mt-2">{error}</p>
+                )}
+             </CardHeader>
+
+             <CardContent className="space-y-4">
+                <div className="space-y-2">
+                   <Label htmlFor="email">Email</Label>
+                   <Input
+                      id="email"
+                      type="email"
+                      placeholder="m@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                   />
+                </div>
+             </CardContent>
+
+             <CardFooter className="flex-col gap-4 mt-8 cursor-pointer">
+                <Button
+                   type="submit"
+                   className="w-full bg-teal-600 hover:bg-teal-700 cursor-pointer"
+                   disabled={loading}>
+                   {loading ? "Sending..." : "Get Reset Token"}
+                </Button>
+                <Link
+                   href="/reset-password"
+                   passHref
+                   className="w-full cursor-pointer">
+                   <Button
+                      variant="outline"
+                      className="w-full text-white bg-teal-600 hover:bg-teal-700 cursor-pointer hover:text-white">
+                      I have a token
+                   </Button>
+                </Link>
+                <Link href="/login" passHref className="w-full cursor-pointer">
+                   <Button variant="outline" className="w-full cursor-pointer">
+                      Back to Log-in
+                   </Button>
+                </Link>
+             </CardFooter>
+          </form>
+       </Card>
     );
 };
 

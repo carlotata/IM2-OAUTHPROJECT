@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Link from 'next/link';
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
@@ -37,31 +38,66 @@ const ResetPassword = () => {
     };
 
     return (
-        <Card className="w-full max-w-sm">
-            <form onSubmit={handleSubmit}>
-                <CardHeader>
-                    <CardTitle className="text-2xl">Reset Password</CardTitle>
-                    <CardDescription>Enter your reset token and new password.</CardDescription>
-                     {message && <p className="text-sm text-green-600 mt-2">{message}</p>}
-                     {error && <p className="text-sm text-destructive mt-2">{error}</p>}
-                </CardHeader>
-                <CardContent className="grid gap-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="token">Reset Token</Label>
-                        <Input id="token" name="token" value={formData.token} onChange={onChange} placeholder="Paste your token here" required />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="newPassword">New Password</Label>
-                        <Input id="newPassword" name="newPassword" type="password" value={formData.newPassword} onChange={onChange} required />
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? 'Resetting...' : 'Reset Password'}
+       <Card className="w-full max-w-md mx-auto">
+          <form onSubmit={handleSubmit}>
+             <CardHeader className="flex flex-col items-center mb-7">
+                <img
+                   src="/avatar.svg"
+                   alt="Reset Password"
+                   className="h-20 w-20 rounded-full border-2 border-teal-500 bg-white shadow mb-4"
+                />
+                <CardTitle className="text-teal-700">Reset Password</CardTitle>
+                <CardDescription>
+                   Enter your reset token and new password.
+                </CardDescription>
+                {message && (
+                   <p className="text-sm text-green-600 mt-2">{message}</p>
+                )}
+                {error && (
+                   <p className="text-sm text-destructive mt-2">{error}</p>
+                )}
+             </CardHeader>
+
+             <CardContent className="space-y-4">
+                <div className="space-y-2">
+                   <Label htmlFor="token">Reset Token</Label>
+                   <Input
+                      id="token"
+                      name="token"
+                      value={formData.token}
+                      onChange={onChange}
+                      placeholder="Paste your token here"
+                      required
+                   />
+                </div>
+                <div className="space-y-2">
+                   <Label htmlFor="newPassword">New Password</Label>
+                   <Input
+                      id="newPassword"
+                      name="newPassword"
+                      type="password"
+                      value={formData.newPassword}
+                      onChange={onChange}
+                      required
+                   />
+                </div>
+             </CardContent>
+
+             <CardFooter className="flex-col gap-4 mt-8">
+                <Button
+                   type="submit"
+                   className="w-full bg-teal-600 hover:bg-teal-700 cursor-pointer"
+                   disabled={loading}>
+                   {loading ? "Resetting..." : "Reset Password"}
                     </Button>
-                </CardFooter>
-            </form>
-        </Card>
+                    <Link href="/forgot-password" passHref className="w-full cursor-pointer">
+                        <Button variant="outline" className="w-full cursor-pointer">
+                            Back to Forgot Password
+                        </Button>
+                    </Link>
+             </CardFooter>
+          </form>
+       </Card>
     );
 };
 
