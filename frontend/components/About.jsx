@@ -29,7 +29,6 @@ const creators = [
    {
       name: "Baydal, Lourden",
       image: "/creators/lourden.jpg",
-      // TODO: Replace with the actual profile URL
       url: "https://www.facebook.com/lourdenbaydal13",
    },
    {
@@ -40,7 +39,6 @@ const creators = [
    {
       name: "Deligero, Juspher",
       image: "/creators/juspher.jpg",
-      // TODO: Replace with the actual profile URL
       url: "https://www.facebook.com/juciper666",
    },
 ];

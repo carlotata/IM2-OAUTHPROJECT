@@ -15,7 +15,6 @@ const handleOAuth = async (req, res) => {
   }
 
     try {
-        // Check if user already exists from this provider
         let user = await db.query('SELECT * FROM users WHERE provider = ? AND provider_account_id = ?', [provider, providerAccountId]);
 
         if (user.length === 0) {
@@ -24,7 +23,6 @@ const handleOAuth = async (req, res) => {
             if (existingEmailUser && existingEmailUser.password) {
                  return res.status(409).json({ message: "This email is already registered. Please sign in with your password." });
           }
-
             // Create a new user for the OAuth sign-in
             const id = generateUUID();
             const [firstName, ...lastNameParts] = name ? name.split(' ') : ["", ""];
@@ -128,7 +126,7 @@ const login = async (req, res) => {
       email: user.email
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
 
     res.cookie("token", token, {
       httpOnly: true,

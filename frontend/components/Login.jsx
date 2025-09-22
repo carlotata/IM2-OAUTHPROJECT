@@ -3,29 +3,31 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import Swal from "sweetalert2";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-   SiGithub,
-   SiGoogle,
-} from "react-icons/si";
+import { SiGithub, SiGoogle } from "react-icons/si";
 
 const Login = ({ className, ...props }) => {
    const router = useRouter();
    const searchParams = useSearchParams();
    const [formData, setFormData] = useState({ email: "", password: "" });
-   const [loading, setLoading] = useState(false);
-   const [error, setError] = useState("");
 
    useEffect(() => {
       const oauthError = searchParams.get("error");
       if (oauthError) {
-         setError(decodeURIComponent(oauthError));
+         Swal.fire({
+            icon: "error",
+            title: "Authentication Error",
+            text: decodeURIComponent(oauthError),
+         });
+
+         router.replace("/login", undefined, { shallow: true });
       }
-   }, [searchParams]);
+   }, [searchParams, router]);
 
    const onChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,25 +35,47 @@ const Login = ({ className, ...props }) => {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      setLoading(true);
-      setError("");
+
       try {
          const result = await signIn("credentials", {
             ...formData,
             redirect: false,
          });
+
          if (result.error) {
-            setError(result.error);
-            setLoading(false);
+            Swal.fire({
+               toast: true,
+               position: "top-end",
+               icon: "error",
+               text: result.error,
+               showConfirmButton: false,
+               timer: 1000,
+               timerProgressBar: true,
+            });
             return;
          }
-         router.push("/");
+
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            text: "You have been logged in successfully.",
+            timer: 1000,
+            showConfirmButton: false,
+         }).then(() => {
+            router.push("/");
+            router.refresh();
+         });
       } catch (err) {
-         setError(
-            err.response?.data?.message || "An error occurred during login."
-         );
-      } finally {
-         setLoading(false);
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            text: err,
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+         });
       }
    };
 
@@ -68,11 +92,6 @@ const Login = ({ className, ...props }) => {
                         <p className="text-muted-foreground text-balance">
                            Login to your HICC account
                         </p>
-                        {error && (
-                           <p className="text-sm text-destructive mt-2">
-                              {error}
-                           </p>
-                        )}
                      </div>
                      <div className="grid gap-3">
                         <Label htmlFor="email">Email</Label>
@@ -83,7 +102,6 @@ const Login = ({ className, ...props }) => {
                            placeholder="m@example.com"
                            value={formData.email}
                            onChange={onChange}
-                           required
                         />
                      </div>
                      <div className="grid gap-3">
@@ -96,7 +114,6 @@ const Login = ({ className, ...props }) => {
                            type="password"
                            value={formData.password}
                            onChange={onChange}
-                           required
                         />
                         <Link
                            href="/forgot-password"
@@ -107,9 +124,8 @@ const Login = ({ className, ...props }) => {
 
                      <Button
                         type="submit"
-                        className="bg-teal-600 w-full cursor-pointer hover:bg-teal-800 hover:scale-99 transition-transform hover:shadow-2xl"
-                        disabled={loading}>
-                        {loading ? "Signing in..." : "Login"}
+                        className="bg-teal-600 w-full cursor-pointer hover:bg-teal-800 hover:scale-99 transition-transform hover:shadow-2xl">
+                        Login
                      </Button>
                      <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                         <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -120,9 +136,11 @@ const Login = ({ className, ...props }) => {
                         <Button
                            variant="outline"
                            type="button"
-                           className="w-full cursor-pointer hover:bg-gray-100 hover:scale-99 transition-transform hover:shadow-2xl"
+                           className="w-full cursor-pointer hover:bg-gray-100 hover:scale-99 transition-transform hover:shadow-2xl flex items-center gap-2"
                            onClick={() =>
-                              signIn("github", { callbackUrl: "/" })
+                              signIn("github", {
+                                 callbackUrl: "/",
+                              })
                            }>
                            <SiGithub />
                            GitHub
@@ -130,11 +148,13 @@ const Login = ({ className, ...props }) => {
                         <Button
                            variant="outline"
                            type="button"
-                           className="w-full cursor-pointer hover:bg-gray-100 hover:scale-99  transition-transform hover:shadow-2xl"
+                           className="w-full cursor-pointer hover:bg-gray-100 hover:scale-99  transition-transform hover:shadow-2xl flex items-center gap-2"
                            onClick={() =>
-                              signIn("google", { callbackUrl: "/" })
+                              signIn("google", {
+                                 callbackUrl: "/",
+                              })
                            }>
-                           <SiGoogle/>
+                           <SiGoogle />
                            Google
                         </Button>
                      </div>
@@ -155,7 +175,8 @@ const Login = ({ className, ...props }) => {
                      rel="noopener noreferrer"
                      className="block mt-4 group relative w-full">
                      <div className="absolute -top-14 left-0 w-full flex justify-center pointer-events-none z-10">
-                        <span className="opacity-20 group-hover:opacity-100 transition-opacity duration-300 text-white px-4 text-base md:text-lg font-extrabold tracking-widest w-full max-w-xl text-center">
+                        <span
+                           className=" opacity-50 group-hover:opacity-100 group-hover:scale-130 transition-all duration-300 text-white px-4 text-base md:text-lg font-extrabold tracking-widest w-full max-w-xl text-center">
                            <span className="text-teal-400">H</span>
                            <span className="text-gray-500 font-normal">
                               ealth&nbsp;

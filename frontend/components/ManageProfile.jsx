@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Swal from "sweetalert2"; 
 import { Button } from "@/components/ui/button";
 import {
    Card,
@@ -27,9 +28,9 @@ const Profile = () => {
       age: "",
       email: "",
    });
+
+   const [initialProfileData, setInitialProfileData] = useState(null);
    const [loading, setLoading] = useState(true);
-   const [profileError, setProfileError] = useState("");
-   const [profileSuccess, setProfileSuccess] = useState("");
 
    useEffect(() => {
       const fetchProfile = async () => {
@@ -37,34 +38,34 @@ const Profile = () => {
             try {
                const res = await axios.get(`${API}/api/user/profile`, {
                   headers: {
-                     // 4. Send token in Authorization header
                      Authorization: `Bearer ${session.backendToken}`,
                   },
                });
                setProfileData(res.data);
+               // Store the initial data when fetched
+               setInitialProfileData(res.data);
             } catch (err) {
-               setProfileError(
-                  "Failed to fetch profile. Redirecting to login..."
-               );
-               setTimeout(() => router.push("/login"), 2000);
+               Swal.fire({
+                  icon: "error",
+                  title: "Failed to fetch profile",
+                  text: "You will be redirected to the login page.",
+                  timer: 2000,
+                  showConfirmButton: false,
+               }).then(() => {
+                  router.push("/login");
+               });
             } finally {
                setLoading(false);
             }
          }
-         // try {
-         //     const res = await axios.get(`${API}/api/user/profile`, { withCredentials: true });
-         //     setProfileData(res.data);
-         // } catch (err) {
-         //     setProfileError("Failed to fetch profile. Redirecting to login...");
-         //     setTimeout(() => router.push("/login"), 2000);
-         // } finally {
-         //     setLoading(false);
-         // }
       };
+
       if (status === "unauthenticated") {
          router.push("/login");
       }
-      fetchProfile();
+      if (status === "authenticated") {
+         fetchProfile();
+      }
    }, [router, session, status]);
 
    const handleProfileChange = (e) =>
@@ -73,26 +74,48 @@ const Profile = () => {
    const handleUpdateProfile = async (e) => {
       e.preventDefault();
       if (!session?.backendToken) return;
-      setProfileError("");
-      setProfileSuccess("");
+
+      if (JSON.stringify(profileData) === JSON.stringify(initialProfileData)) {
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "info",
+            text: "No changes to save.",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+         });
+         return; 
+      }
       try {
-         // const res = await axios.put(`${API}/api/user/profile`, profileData, { withCredentials: true });
          const res = await axios.put(`${API}/api/user/profile`, profileData, {
             headers: {
-               // 6. Send token for profile update
                Authorization: `Bearer ${session.backendToken}`,
             },
          });
 
-         setProfileSuccess(res.data.message);
+         setInitialProfileData(profileData);
+
+         Swal.fire({
+            position: "top-end",
+            toast: true,
+            icon: "success",
+            text: "Profile Updated!",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            text: res.data.message || "Your information has been saved.",
+         });
       } catch (err) {
-         setProfileError(
-            err.response?.data?.message || "Failed to update profile."
-         );
+         Swal.fire({
+            icon: "error",
+            title: "Update Failed",
+            text:
+               err.response?.data?.message || "An unexpected error occurred.",
+         });
       }
    };
 
-   // if (loading) return <div className="text-center">Loading profile...</div>;
    if (status === "loading" || loading) {
       return <div className="text-center p-8">Loading profile...</div>;
    }
@@ -121,7 +144,6 @@ const Profile = () => {
             </Button>
          </Link>
          <div className="flex w-full mx-auto my-20 h-full gap-8 justify-center">
-            {/* Profile Update Card */}
             <Card className="w-full max-w-md">
                <form onSubmit={handleUpdateProfile}>
                   <CardHeader className="flex flex-col items-center mb-7">
@@ -136,16 +158,7 @@ const Profile = () => {
                      <CardDescription>
                         Manage your personal information.
                      </CardDescription>
-                     {profileSuccess && (
-                        <p className="text-sm text-green-600 mt-2">
-                           {profileSuccess}
-                        </p>
-                     )}
-                     {profileError && (
-                        <p className="text-sm text-destructive mt-2">
-                           {profileError}
-                        </p>
-                     )}
+                     {/* Success and error messages are now handled by Swal */}
                   </CardHeader>
                   <CardContent className="space-y-4">
                      <div className="grid grid-cols-2 gap-4">
@@ -154,7 +167,7 @@ const Profile = () => {
                            <Input
                               id="first_name"
                               name="first_name"
-                              value={profileData.first_name}
+                              value={profileData.first_name || ""}
                               onChange={handleProfileChange}
                               required
                            />
@@ -164,7 +177,7 @@ const Profile = () => {
                            <Input
                               id="last_name"
                               name="last_name"
-                              value={profileData.last_name}
+                              value={profileData.last_name || ""}
                               onChange={handleProfileChange}
                               required
                            />
@@ -176,7 +189,7 @@ const Profile = () => {
                            id="age"
                            name="age"
                            type="number"
-                           value={profileData.age}
+                           value={profileData.age || ""}
                            onChange={handleProfileChange}
                            required
                         />
@@ -186,7 +199,7 @@ const Profile = () => {
                         <Input
                            id="email"
                            name="email"
-                           value={profileData.email}
+                           value={profileData.email || ""}
                            readOnly
                            disabled
                         />

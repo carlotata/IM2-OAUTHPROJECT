@@ -1,5 +1,3 @@
-// app/page.jsx (with debugging)
-
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import Logout from "@/components/Logout";
@@ -36,16 +34,13 @@ const HomePage = async () => {
 
   const session = await getServerSession(authOptions);
 
-  // Check #1: Is the session object itself valid?
   if (!session) {
     console.error("DEBUG: Redirecting to /login because session is NULL or undefined.");
     redirect("/login");
   }
 
-  // Log the contents of the session object
   console.log("DEBUG: Session object found:", JSON.stringify(session, null, 2));
 
-  // Check #2: Is the onboarding flag correct in the session?
   if (!session.onboarding_complete) {
     console.log("DEBUG: Redirecting to /onboard because session.onboarding_complete is false.");
     redirect("/onboard");
@@ -53,7 +48,6 @@ const HomePage = async () => {
 
   console.log("DEBUG: Onboarding check passed. Now attempting to fetch profile...");
 
-  // Check #3: Does the getProfile call succeed?
   const user = await getProfile(session.backendToken);
 
   if (!user) {
@@ -86,10 +80,7 @@ const HomePage = async () => {
                     <span className="mr-2">👤</span> Manage Profile
                  </Button>
               </Link>
-              <Link
-                 href="/changepassword"
-                 rel="noopener noreferrer"
-                 passHref>
+              <Link href="/changepassword" rel="noopener noreferrer" passHref>
                  <Button
                     variant="ghost"
                     className="justify-start w-full text-left cursor-pointer">
@@ -115,10 +106,10 @@ const HomePage = async () => {
                  </Button>
               </Link>
               <div className="border-t my-4" />
-              <Logout />
            </nav>
-           <div className="mt-auto px-6 pb-6 text-xs text-gray-400">
+           <div className="mt-auto px-6 pb-6 text-xs justify-between flex items-center w-full">
               &copy; {new Date().getFullYear()} HICC
+              <Logout /> 
            </div>
         </aside>
 
