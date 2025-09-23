@@ -11,8 +11,6 @@ import {
    SiJsonwebtokens,
 } from "react-icons/si";
 
-// --- Data arrays for cleaner mapping ---
-
 const techStack = [
    { name: "Next.js", icon: <SiNextdotjs className="h-7 w-7" /> },
    { name: "React", icon: <SiReact className="h-7 w-7" /> },
@@ -43,15 +41,10 @@ const creators = [
    },
 ];
 
-// --- The Component ---
-
 function AboutPage() {
    return (
-      // Main container to center the content on the page
       <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-         {/* The main content card */}
          <div className="w-full max-w-2xl rounded-xl bg-white p-8 text-center shadow-lg">
-            {/* Header */}
             <div className="flex flex-col items-center">
                <img
                   src="/avatar.svg"
@@ -72,22 +65,18 @@ function AboutPage() {
                </p>
             </div>
 
-            {/* Divider */}
             <div className="my-8 h-px w-full bg-gray-200"></div>
 
-            {/* Tech Stack Section */}
             <div className="space-y-4">
                <h2 className="text-xl font-semibold text-gray-800">
                   Technology Stack
                </h2>
                <div className="flex flex-wrap justify-center gap-6 text-gray-500">
                   {techStack.map((tech) => (
-                     // The 'group' class enables the hover effect for the child tooltip
                      <div key={tech.name} className="group relative">
                         <span className="cursor-pointer transition-transform hover:scale-110 hover:text-teal-600">
                            {tech.icon} {tech.image && <img src={tech.image} alt={tech.name} className="h-7 w-7 inline-block" />}
                         </span>
-                        {/* Custom Tooltip */}
                         <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
                            {tech.name}
                         </span>
@@ -96,10 +85,8 @@ function AboutPage() {
                </div>
             </div>
 
-            {/* Divider */}
             <div className="my-8 h-px w-full bg-gray-200"></div>
 
-            {/* Creators Section */}
             <div className="space-y-5">
                <h2 className="text-xl font-semibold text-gray-800">
                   Project Creators
@@ -126,11 +113,10 @@ function AboutPage() {
                </div>
             </div>
 
-            {/* Footer / Go Back Button */}
             <div className="mt-10">
                <Link
                   href="/"
-                  className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                  className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:tranform hover:scale-99">
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      className="h-4 w-4"

@@ -92,7 +92,7 @@ const ResetPassword = () => {
                     </Button>
                     <Link href="/forgot-password" passHref className="w-full cursor-pointer">
                         <Button variant="outline" className="w-full cursor-pointer">
-                            Back to Forgot Password
+                            Back to Token Request
                         </Button>
                     </Link>
              </CardFooter>

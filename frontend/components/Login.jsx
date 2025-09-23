@@ -176,7 +176,7 @@ const Login = ({ className, ...props }) => {
                      className="block mt-4 group relative w-full">
                      <div className="absolute -top-14 left-0 w-full flex justify-center pointer-events-none z-10">
                         <span
-                           className=" opacity-50 group-hover:opacity-100 group-hover:scale-130 transition-all duration-300 text-white px-4 text-base md:text-lg font-extrabold tracking-widest w-full max-w-xl text-center">
+                           className=" opacity-50 group-hover:opacity-100 group-hover:scale-130 transition-all duration-300 font-extrabold text-white px-4 text-base md:text-lg tracking-widest w-full max-w-xl text-center">
                            <span className="text-teal-400">H</span>
                            <span className="text-gray-500 font-normal">
                               ealth&nbsp;

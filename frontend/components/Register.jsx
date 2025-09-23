@@ -25,6 +25,7 @@ const Register = () => {
       last_name: "",
       email: "",
       password: "",
+      confirm_password: "",
    });
 
    const onChange = (e) => {
@@ -34,11 +35,26 @@ const Register = () => {
    const handleSubmit = async (e) => {
       e.preventDefault();
 
+      if (formData.password !== formData.confirm_password) {
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            text: "Passwords do not match.",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+         });
+         setFormData({ ...formData, password: "", confirm_password: "" });
+         return;
+      }
+
       if (
          !formData.first_name ||
          !formData.last_name ||
          !formData.email ||
-         !formData.password
+         !formData.password ||
+         !formData.confirm_password
       ) {
          Swal.fire({
             toast: true,
@@ -64,6 +80,13 @@ const Register = () => {
             timer: 1000,
             timerProgressBar: true,
          });
+         setFormData({...formData,
+         first_name: "",
+         last_name: "",
+         email: "",
+         password: "",
+         confirm_password: "",
+         });
          router.push("/login");
       } catch (err) {
 
@@ -76,6 +99,7 @@ const Register = () => {
             timer: 1000,
             timerProgressBar: true,
          });
+         setFormData({ ...formData, email: "" });
       }
    };
 
@@ -137,6 +161,17 @@ const Register = () => {
                      name="password"
                      type="password"
                      value={formData.password}
+                     onChange={onChange}
+                  />
+               </div>
+
+               <div className="space-y-2">
+                  <Label htmlFor="confirm_password">Confirm Password</Label>
+                  <Input
+                     id="confirm_password"
+                     name="confirm_password"
+                     type="password"
+                     value={formData.confirm_password}
                      onChange={onChange}
                   />
                </div>

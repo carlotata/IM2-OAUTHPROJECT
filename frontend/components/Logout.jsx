@@ -13,9 +13,12 @@ const Logout = () => {
      await signOut({ callbackUrl: "/login" });
   };
   return (
-    <Button onClick={handleLogout} variant="outline" className="ml-2 cursor-pointer">
-      <CiLogout className="mr-2 h-4 w-4" /> Logout
-    </Button>
+     <Button
+        onClick={handleLogout}
+        variant="outline"
+        className="ml-2 cursor-pointer hover:tranform hover:scale-99">
+        <CiLogout className="mr-2 h-4 w-4" /> Logout
+     </Button>
   );
 };
 

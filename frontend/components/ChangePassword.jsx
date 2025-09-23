@@ -29,6 +29,7 @@ const ChangePassword = () => {
    const [passwordData, setPasswordData] = useState({
       currentPassword: "",
       newPassword: "",
+      confirm_newPassword: "",
    });
    const [loading, setLoading] = useState(true);
 
@@ -45,11 +46,14 @@ const ChangePassword = () => {
             } catch (err) {
 
                Swal.fire({
+                  toast: true,
+                  position: "top-end",
                   icon: "error",
                   title: "Session Error",
                   text: "Could not fetch user data. Redirecting to login.",
                   timer: 1000,
                   showConfirmButton: false,
+                  timerProgressBar: true,
                }).then(() => {
                   router.push("/login");
                });
@@ -73,6 +77,33 @@ const ChangePassword = () => {
       e.preventDefault();
       if (!session?.backendToken) return;
 
+      if(!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirm_newPassword) {
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            text: "All fields are required.",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+         });
+         return;
+      }
+
+      if (passwordData.newPassword !== passwordData.confirm_newPassword) {
+         Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            text: "New passwords do not match.",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+         });
+         setPasswordData({ ...passwordData, newPassword: "", confirm_newPassword: "" });
+         return;
+      }
+
       try {
          const res = await axios.post(
             `${API}/api/auth/change-password`,
@@ -84,7 +115,6 @@ const ChangePassword = () => {
             }
          );
 
-         // On success, show success toast
          Swal.fire({
             toast: true,
             position: "top-end",
@@ -94,9 +124,9 @@ const ChangePassword = () => {
             timer: 1000,
             timerProgressBar: true,
          });
-         setPasswordData({ currentPassword: "", newPassword: "" }); // Clear fields
+         setPasswordData({ currentPassword: "", newPassword: "", confirm_newPassword: ""  });
       } catch (err) {
-         // On error, show error toast
+
          Swal.fire({
             toast: true,
             position: "top-end",
@@ -114,7 +144,7 @@ const ChangePassword = () => {
          <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 cursor-pointer">
+            className="flex items-center gap-2 cursor-pointer hover:tranform hover:scale-99">
             <svg
                xmlns="http://www.w3.org/2000/svg"
                className="h-4 w-4"
@@ -137,7 +167,6 @@ const ChangePassword = () => {
       return <div className="text-center p-8">Loading...</div>;
    }
 
-   // UI for OAuth users (identified by having a profile image from the provider)
    if (session.user.image) {
       return (
          <>
@@ -164,7 +193,6 @@ const ChangePassword = () => {
       );
    }
 
-   // UI for standard email/password users
    return (
       <>
          <BackButton />
@@ -183,7 +211,6 @@ const ChangePassword = () => {
                      <CardDescription>
                         Enter your current and new password.
                      </CardDescription>
-                     {/* 5. Success and error messages are now handled by Swal */}
                   </CardHeader>
                   <CardContent className="space-y-4">
                      <div className="space-y-2">
@@ -205,6 +232,16 @@ const ChangePassword = () => {
                            name="newPassword"
                            type="password"
                            value={passwordData.newPassword}
+                           onChange={handlePasswordChange}
+                        />
+                     </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="confirm_newPassword">Confirm New Password</Label>
+                        <Input
+                           id="confirm_newPassword"
+                           name="confirm_newPassword"
+                           type="password"
+                           value={passwordData.confirm_newPassword}
                            onChange={handlePasswordChange}
                         />
                      </div>

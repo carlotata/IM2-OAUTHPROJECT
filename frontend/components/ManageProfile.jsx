@@ -126,7 +126,7 @@ const Profile = () => {
             <Button
                variant="outline"
                size="sm"
-               className="flex items-center gap-2 cursor-pointer">
+               className="flex items-center gap-2 cursor-pointer hover:tranform hover:scale-99">
                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4"
